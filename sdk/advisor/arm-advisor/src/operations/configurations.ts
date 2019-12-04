@@ -65,14 +65,14 @@ export class Configurations {
    * @param configContract The Azure Advisor configuration data structure.
    * @param callback The callback
    */
-  createInSubscription(configContract: Models.ConfigData, callback: msRest.ServiceCallback<Models.ARMErrorResponseBody>): void;
+  createInSubscription(configContract: Models.ConfigData, callback: msRest.ServiceCallback<any>): void;
   /**
    * @param configContract The Azure Advisor configuration data structure.
    * @param options The optional parameters
    * @param callback The callback
    */
-  createInSubscription(configContract: Models.ConfigData, options: msRest.RequestOptionsBase, callback: msRest.ServiceCallback<Models.ARMErrorResponseBody>): void;
-  createInSubscription(configContract: Models.ConfigData, options?: msRest.RequestOptionsBase | msRest.ServiceCallback<Models.ARMErrorResponseBody>, callback?: msRest.ServiceCallback<Models.ARMErrorResponseBody>): Promise<Models.ConfigurationsCreateInSubscriptionResponse> {
+  createInSubscription(configContract: Models.ConfigData, options: msRest.RequestOptionsBase, callback: msRest.ServiceCallback<any>): void;
+  createInSubscription(configContract: Models.ConfigData, options?: msRest.RequestOptionsBase | msRest.ServiceCallback<any>, callback?: msRest.ServiceCallback<any>): Promise<Models.ConfigurationsCreateInSubscriptionResponse> {
     return this.client.sendOperationRequest(
       {
         configContract,
@@ -123,15 +123,15 @@ export class Configurations {
    * @param resourceGroup The name of the Azure resource group.
    * @param callback The callback
    */
-  createInResourceGroup(configContract: Models.ConfigData, resourceGroup: string, callback: msRest.ServiceCallback<Models.ARMErrorResponseBody>): void;
+  createInResourceGroup(configContract: Models.ConfigData, resourceGroup: string, callback: msRest.ServiceCallback<any>): void;
   /**
    * @param configContract The Azure Advisor configuration data structure.
    * @param resourceGroup The name of the Azure resource group.
    * @param options The optional parameters
    * @param callback The callback
    */
-  createInResourceGroup(configContract: Models.ConfigData, resourceGroup: string, options: msRest.RequestOptionsBase, callback: msRest.ServiceCallback<Models.ARMErrorResponseBody>): void;
-  createInResourceGroup(configContract: Models.ConfigData, resourceGroup: string, options?: msRest.RequestOptionsBase | msRest.ServiceCallback<Models.ARMErrorResponseBody>, callback?: msRest.ServiceCallback<Models.ARMErrorResponseBody>): Promise<Models.ConfigurationsCreateInResourceGroupResponse> {
+  createInResourceGroup(configContract: Models.ConfigData, resourceGroup: string, options: msRest.RequestOptionsBase, callback: msRest.ServiceCallback<any>): void;
+  createInResourceGroup(configContract: Models.ConfigData, resourceGroup: string, options?: msRest.RequestOptionsBase | msRest.ServiceCallback<any>, callback?: msRest.ServiceCallback<any>): Promise<Models.ConfigurationsCreateInResourceGroupResponse> {
     return this.client.sendOperationRequest(
       {
         configContract,
@@ -200,9 +200,10 @@ const listBySubscriptionOperationSpec: msRest.OperationSpec = {
 
 const createInSubscriptionOperationSpec: msRest.OperationSpec = {
   httpMethod: "PUT",
-  path: "subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations",
+  path: "subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations/{configurationName}",
   urlParameters: [
-    Parameters.subscriptionId
+    Parameters.subscriptionId,
+    Parameters.configurationName
   ],
   queryParameters: [
     Parameters.apiVersion
@@ -218,7 +219,9 @@ const createInSubscriptionOperationSpec: msRest.OperationSpec = {
     }
   },
   responses: {
-    204: {},
+    200: {
+      bodyMapper: Mappers.ConfigData
+    },
     400: {
       bodyMapper: Mappers.ARMErrorResponseBody
     },
@@ -255,9 +258,10 @@ const listByResourceGroupOperationSpec: msRest.OperationSpec = {
 
 const createInResourceGroupOperationSpec: msRest.OperationSpec = {
   httpMethod: "PUT",
-  path: "subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations",
+  path: "subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations/{configurationName}",
   urlParameters: [
     Parameters.subscriptionId,
+    Parameters.configurationName,
     Parameters.resourceGroup
   ],
   queryParameters: [
@@ -274,7 +278,9 @@ const createInResourceGroupOperationSpec: msRest.OperationSpec = {
     }
   },
   responses: {
-    204: {},
+    200: {
+      bodyMapper: Mappers.ConfigData
+    },
     400: {
       bodyMapper: Mappers.ARMErrorResponseBody
     },
